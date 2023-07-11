@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CurrentAccounts from './pages/CurrentAccounts';
 import NewCurrentAccount from './pages/NewCurrentAccount';
 import Transactions from './pages/Transactions';
+import NewTransaction from './pages/NewTransaction';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
           <Route exact path='/' element={<CurrentAccounts />} />
           <Route exact path='/newcurrentaccount' element={<NewCurrentAccount />} />
           <Route exact path='/viewtransactions/:currentAccountId' element={<Transactions />} />
+          <Route exact path='/newtransaction/:currentAccountId' element={<NewTransaction />} />
         </Routes>
       </Router>
     </div>
