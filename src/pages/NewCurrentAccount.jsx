@@ -19,9 +19,17 @@ export default function NewCurrentAccount() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:8080/api/customers/1/currentaccounts', currentAccount);
-    navigate('/');
+
+    const token = localStorage.getItem('token');
+    const customerId = localStorage.getItem('customerId');
+
+    await axios.post(`http://localhost:8080/api/customers/${customerId}/currentaccounts`, currentAccount, {
+      headers: {
+        'Authorization': token ? `Bearer ${token}` : undefined,
+      },});
+    navigate('/accounts');
   };
+
 
   return (
     <div className='container '>
@@ -59,7 +67,7 @@ export default function NewCurrentAccount() {
                 Submit
               </button>
               <Link
-                to='/'
+                to='/accounts'
                 type='button'
                 className='btn btn-outline-danger mx-2'
               >
