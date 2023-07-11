@@ -3,34 +3,33 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 
 export default function Transactions() {
-  const [transactions, seTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   const { currentAccountId } = useParams();
 
   useEffect(() => {
-    loadTransactions();
-  }, []);
 
   const loadTransactions = async () => {
+    const token = localStorage.getItem('token');
+    const customerId = localStorage.getItem('customerId');
+
     const result = await axios.get(
-      `http://localhost:8080/api/customers/1/currentaccounts/${currentAccountId}/transactions`
+      `http://localhost:8080/api/customers/${customerId}/currentaccounts/${currentAccountId}/transactions`, {headers: {
+        'Authorization': token ? `Bearer ${token}` : undefined,
+      },}
     );
-    seTransactions(result.data);
+    setTransactions(result.data);
   };
 
-  const loadAccountData = async () => {
-    const result = await axios.get(
-      `http://localhost:8080/api/customers/1/currentaccounts/${currentAccountId}`
-    );
-    seTransactions(result.data);
-  };
+    loadTransactions();
+  }, [currentAccountId]);
 
   return (
     <div className='container'>
       <div className='py-4'>
         <div className='row py-2'>
           <div className='col-sm-4 text-start'>
-            <Link to={`/`} className='btn btn-outline-secondary me-2'>
+            <Link to={`/accounts`} className='btn btn-outline-secondary me-2'>
               Back to Accounts 
             </Link>
 
@@ -43,7 +42,7 @@ export default function Transactions() {
           </div>
           <div className='col-sm-4'></div>
         </div>
-        <table className='table table-hover table-striped border shadow "'>
+        <table className='table table-hover table-striped border shadow"'>
           <thead>
             <tr>
               <th scope='col' style={{ backgroundColor: '#d3f5d2' }}>
@@ -72,7 +71,6 @@ export default function Transactions() {
           <tbody>
             {transactions.map((transaction, index) => {
               return (
-                <>
                   <tr key={index}>
                     <th scope='row'>{index + 1}</th>
                     <td>{transaction.createdAt}</td>
@@ -82,7 +80,6 @@ export default function Transactions() {
                     <td style={{ color: '#f13131' }}>{!transaction.isCredit && transaction.amount}</td>
                     <td style={{ color: '#23961d' }}>{transaction.isCredit &&transaction.amount}</td>
                   </tr>
-                </>
               );
             })}
           </tbody>

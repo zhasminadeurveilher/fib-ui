@@ -16,7 +16,7 @@ export default function NewTransaction() {
     isCredit: false,
   });
 
-  const { description, receiver, receiverAccount, amount, isCredit } = transaction;
+  const { description, receiver, receiverAccount, amount} = transaction;
 
   const onInputChange = (e) => {
     setTransaction({ ...transaction, [e.target.name]: e.target.value });
@@ -24,8 +24,14 @@ export default function NewTransaction() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`http://localhost:8080/api/customers/1/currentaccounts/${currentAccountId}/transactions`, transaction);
-    navigate('/');
+
+    const token = localStorage.getItem('token');
+    const customerId = localStorage.getItem('customerId');
+
+    await axios.post(`http://localhost:8080/api/customers/${customerId}/currentaccounts/${currentAccountId}/transactions`, transaction, {headers: {
+        'Authorization': token ? `Bearer ${token}` : undefined,
+      },});
+    navigate(`/viewtransactions/${currentAccountId}`);
   };
 
   return (
@@ -93,7 +99,7 @@ export default function NewTransaction() {
                 Submit
               </button>
               <Link
-                to='/'
+                to={`/viewtransactions/${currentAccountId}`}
                 type='button'
                 className='btn btn-outline-danger mx-2'
               >

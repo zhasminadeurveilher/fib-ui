@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function CurrentAccounts() {
   const [currentAccounts, setCurrentAccounts] = useState([]);
@@ -10,8 +10,15 @@ export default function CurrentAccounts() {
   }, []);
 
   const loadCurrentAccounts = async () => {
+    const token = localStorage.getItem('token');
+    const customerId = localStorage.getItem('customerId');
+
     const result = await axios.get(
-      `http://localhost:8080/api/customers/1/currentaccounts`
+      `http://localhost:8080/api/customers/${customerId}/currentaccounts`, {
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : undefined,
+        },
+      }
     );
     setCurrentAccounts(result.data);
   };
@@ -30,25 +37,25 @@ export default function CurrentAccounts() {
           </div>
           <div className='col-sm-4'></div>
         </div>
-        <table className='table border shadow'>
+        <table className='table table-hover table-striped border shadow'>
           <thead>
             <tr>
-              <th scope='col' style={{ backgroundColor: '#f1f1f1' }}>
+              <th scope='col' style={{ backgroundColor: '#f8efa1' }}>
                 #
               </th>
-              <th scope='col' style={{ backgroundColor: '#f1f1f1' }}>
+              <th scope='col' style={{ backgroundColor: '#f8efa1' }}>
                 Balance
               </th>
-              <th scope='col' style={{ backgroundColor: '#f1f1f1' }}>
+              <th scope='col' style={{ backgroundColor: '#f8efa1' }}>
                 Currency
               </th>
-              <th scope='col' style={{ backgroundColor: '#f1f1f1' }}>
+              <th scope='col' style={{ backgroundColor: '#f8efa1' }}>
                 Name
               </th>
-              <th scope='col' style={{ backgroundColor: '#f1f1f1' }}>
+              <th scope='col' style={{ backgroundColor: '#f8efa1' }}>
                 Account Number
               </th>
-              <th scope='col' style={{ backgroundColor: '#f1f1f1' }}></th>
+              <th scope='col' style={{ backgroundColor: '#f8efa1' }}></th>
             </tr>
           </thead>
           <tbody>
