@@ -34,7 +34,7 @@ export default function Transactions() {
               Back to Accounts 
             </Link>
 
-            <Link to={`/newtransaction`} className='btn btn-outline-primary'>
+            <Link to={`/newtransaction/${currentAccountId}`} className='btn btn-outline-primary'>
                New
             </Link>
           </div>
