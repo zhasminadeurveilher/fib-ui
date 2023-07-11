@@ -62,7 +62,7 @@ export default function CurrentAccounts() {
                   <td>{account.accountNumber}</td>
                   <td>
                     <Link
-                      to={`/viewtransactions`}
+                      to={`/viewtransactions/${account.id}`}
                       className='btn btn-outline-primary mx-2'
                     >
                       Transactions
